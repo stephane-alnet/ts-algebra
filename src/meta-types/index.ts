@@ -2,7 +2,7 @@ import { Any, AnyType } from "./any";
 import { Never, NeverType } from "./never";
 import { Const, ConstType } from "./const";
 import { Enum, EnumType } from "./enum";
-import { Primitive, $Primitive, PrimitiveType } from "./primitive";
+import { Primitive, $Primitive, BrandedPrimitive, $BrandedPrimitive, PrimitiveType } from "./primitive";
 import { _Array, _$Array, ArrayType } from "./array";
 import { Tuple, $Tuple, TupleType } from "./tuple";
 import { _Object, _$Object, ObjectType } from "./object";
@@ -22,6 +22,8 @@ export {
   Enum,
   Primitive,
   $Primitive,
+  BrandedPrimitive,
+  $BrandedPrimitive,
   _Array as Array,
   _$Array as $Array,
   Tuple,
