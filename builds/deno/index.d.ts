@@ -64,13 +64,26 @@ declare type Primitive<T extends null | boolean | number | string> = $Primitive<
 declare type $Primitive<T> = If<A.Equals<T, never>, Never, {
     type: PrimitiveTypeId;
     value: T;
+    brand: undefined;
+}>;
+declare type BrandedPrimitive<T extends null | boolean | number | string, B extends string> = $BrandedPrimitive<T, B>;
+declare type $BrandedPrimitive<T, B extends string> = If<A.Equals<T, never>, Never, {
+    type: PrimitiveTypeId;
+    value: T;
+    brand: B;
 }>;
 declare type PrimitiveType = {
     type: PrimitiveTypeId;
     value: null | boolean | number | string;
+    brand: string | undefined;
 };
 declare type PrimitiveValue<T extends PrimitiveType> = T["value"];
-declare type ResolvePrimitive<T extends PrimitiveType> = PrimitiveValue<T>;
+declare type PrimitiveBrand<T extends PrimitiveType> = T["brand"];
+declare const BrandName: unique symbol;
+interface Branded<B> {
+    [BrandName]: B;
+}
+declare type ResolvePrimitive<T extends PrimitiveType> = PrimitiveBrand<T> extends string ? PrimitiveValue<T> & Branded<PrimitiveBrand<T>> : PrimitiveValue<T>;
 
 declare type ObjectTypeId = "object";
 declare type _Object<V extends Record<string, Type> = {}, R extends string = never, P extends Type = Never> = _$Object<V, R, P>;
@@ -378,6 +391,8 @@ type index_Const<V extends any> = Const<V>;
 type index_Enum<V extends any> = Enum<V>;
 type index_Primitive<T extends null | boolean | number | string> = Primitive<T>;
 type index_$Primitive<T> = $Primitive<T>;
+type index_BrandedPrimitive<T extends null | boolean | number | string, B extends string> = BrandedPrimitive<T, B>;
+type index_$BrandedPrimitive<T, B extends string> = $BrandedPrimitive<T, B>;
 type index_Tuple<V extends Type[], P extends Type = Never> = Tuple<V, P>;
 type index_$Tuple<V, P = Never> = $Tuple<V, P>;
 type index_Union<V extends Type> = Union<V>;
@@ -404,6 +419,8 @@ declare namespace index {
     index_Enum as Enum,
     index_Primitive as Primitive,
     index_$Primitive as $Primitive,
+    index_BrandedPrimitive as BrandedPrimitive,
+    index_$BrandedPrimitive as $BrandedPrimitive,
     _Array as Array,
     _$Array as $Array,
     index_Tuple as Tuple,
